@@ -1,0 +1,58 @@
+{% extends "index.html" %}
+
+{% block content %}
+    <h1>Edit</h1>
+    <div class="container">
+        <h1>Event Calendar</h1>
+        <form action="/edit/{{ index }}" method="post">
+
+            <div class="row" name="date time fields">
+                <div class="mb-2 col">
+                    <label for="date" class="form-label">Date:</label>
+                    <input type="date" class="form-control" id="date" name="date" aria-describedby="dateHelp" value="{{ event.date }}">
+    
+                </div>
+    
+                <div class="mb-2 col">
+                    <label for="time" class="form-label">Time:</label>
+                    <input type="time" class="form-control" id="date" name="time" aria-describedby="timeHelp" value="{{ event.time }}">
+                </div>
+            </div>      
+    
+            <div class="row" name="location conductor fields">
+                <div class="mb-3 col">
+                    <label for="location" class="form-label">Location:</label>
+                    <select class="form-select" aria-label="Default select example" id="location" name="location">
+                        {% for location in locations %}
+                            {% if event.location == location %}
+                                <option selected value="{{ location }}">{{ location }}</option>
+                            {% else %}
+                                <option value="{{ location }}">{{ location }}</option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+                </div>
+                
+                <div class="mb-3 col">
+                    <label for="conductor" class="form-label">Conductor:</label>
+                    <select class="form-select" aria-label="Default select example" id="conductor" name="conductor">
+                        {% for conductor in conductors %}
+                            {% if event.conductor == conductor %}
+                                <option selected value="{{ conductor }}">{{ conductor }}</option>
+                            {% else %}
+                                <option value="{{ conductor }}">{{ conductor }}</option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+
+            <!-- Other form fields -->
+            <input type="hidden" name="referrer" value="{{ referrer }}">
+    
+            <div class="col-12">
+                <button class="btn btn-primary" type="submit">Save Edit</button>
+              </div>        
+        </form>
+    </div>
+{% endblock %}

@@ -1,0 +1,87 @@
+{% extends "index.html" %}
+
+{% block content %}
+
+<style>
+    table {
+        table-layout: fixed;
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    th, td {
+        border: 1px solid black;
+        text-align: center;
+        width: 14.28%;
+    }
+    
+</style>
+<div class="container d-print-none py-2">
+<a class="btn btn-primary" href="/cal/{{ month-1 }}/{{ year }}">Back</a>
+<a class="btn btn-primary" href="/cal/{{ month+1 }}/{{ year }}">Next</a> 
+</div>
+
+<div class="container">
+    <table name="calendar">
+        <tr>
+            <th colspan="7" style="background-color: black; color: white">
+                <h2>{{ year }}-{{ month }}</h2>
+            </th>
+        </tr>
+        <tr>
+            <th>Isnin</th>
+            <th>Selasa</th>
+            <th>Rabu</th>
+            <th>Khamis</th>
+            <th>Jumaat </th>
+            <th>Sabtu</th>
+            <th>Ahad</th>
+        </tr>
+        {% for week in dates %}
+        <tr>
+            {% for day in week %}
+                {% if day.month != month %}
+                    <td></td>
+                {% else %}
+                <!-- right align the numbers -->
+                    <td style="text-align: right; background-color: lightgrey;">{{ day.day }}</td>
+                {% endif %}
+            {% endfor %}
+        </tr>
+        <!-- create a second row under the numbers for each week -->
+        <tr>
+            {% for day in week %}
+                <td>
+                    <div class="container">
+                        {% for event in events %}
+                            {% if day == event.date %}
+                                <div class="row py-1">
+                                    <div class="card">
+                                        <div class="card-body py-1">
+                                        <!-- <div class="mx-auto"> -->
+                                            <h5 class="card-subtitle">
+                                                {% if event.time.strftime('%p') == 'AM' %}
+                                                    <nobr>{{ event.time.strftime('%I:%M') }} <small>pgi</small></nobr>
+                                                {% else %}
+                                                    <nobr>{{ event.time.strftime('%I:%M') }} <small>ptg</small></nobr>
+                                                {% endif %}
+                                            </h5>
+                                            <span class="card-subtitle">{{ event.location }}</span>
+                                            <h6 class="card-subtitle">{{ event.conductor }}</h6>
+                                            <nobr>
+                                                <a href="/edit/{{ loop.index -1 }}" class="btn btn-primary btn-sm d-print-none">Edit</a>
+                                                <a href="/delete/{{ loop.index -1 }}" class="btn btn-danger btn-sm d-print-none">Delete</a>
+                                            </nobr>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>  
+                </td>
+            {% endfor %}
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+{% endblock %}
