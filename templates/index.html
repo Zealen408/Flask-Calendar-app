@@ -33,59 +33,16 @@
     </nav>
 </div>
 
+
+{% block form %}
+
+    {% include "event_form.html" %}
+
+{% endblock form %}
+
+
 {% block content %}
-
-<div class="container py-3 d-print-none">
-    <h1>Event Calendar</h1>
-    <form action="/" method="post">
-        <div class="row" name="date time fields">
-            <div class="mb-2 col">
-                <label for="date" class="form-label">Date:</label>
-                <input type="date" class="form-control" id="date" name="date" autofocus="autofocus">
-
-            </div>
-
-            <div class="mb-2 col">
-                <label for="time" class="form-label">Time:</label>
-                <input type="time" class="form-control" id="date" name="time" value="10:00:00">
-            </div>
-        </div>      
-
-        <div class="row" name="location conductor fields">
-            <div class="mb-3 col">
-                <label for="location" class="form-label">Location:</label>
-                <select class="form-select" aria-label="Default select example" id="location" name="location">
-                    {% for location in locations %}
-                        {% if location == 'Dewan' %}
-                            <option selected value="{{ location }}">{{ location }}</option>
-                        {% else %}
-                            <option value="{{ location }}">{{ location }}</option>
-                        {% endif %}
-                    {% endfor %}
-                </select>
-            </div>
-            
-            <div class="mb-3 col">
-                <label for="conductor" class="form-label">Conductor:</label>
-                <select class="form-select" aria-label="Default select example" id="conductor" name="conductor">
-                    {% for conductor in conductors %}
-                        {% if conductor == 'Kris' %}
-                            <option selected value="Kris">Kris</option>
-                        {% else %}
-                            <option value="{{ conductor }}">{{ conductor }}</option>
-                        {% endif %}
-                    {% endfor %}
-                </select>
-            </div>
-        </div>
-
-        <div class="col-12">
-            <button class="btn btn-primary" type="submit">Create Event</button>
-          </div>        
-    </form>
-</div>
-
-<div class="container">
+<div class="container pb-2 d-print-none">
     {% for event in events %}
     <!-- div row with 5px padding on the bottom -->
         <div class="row py-1">
@@ -108,10 +65,9 @@
                 <a class="btn btn-danger" href="/delete/{{ loop.index -1 }}">Delete</a>
             </div>
         </div>
-        
     {% endfor %}
 </div>
-<br>
+
 {% endblock %}
 
 </body>

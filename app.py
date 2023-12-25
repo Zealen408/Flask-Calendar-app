@@ -9,6 +9,12 @@ app = Flask(__name__)
 # A list to store the events
 events = []
 
+default_event = {
+    'date': date.today(),
+    'time': time(10, 0, 0),
+    'location': '',
+    'conductor': ''
+}
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -35,7 +41,7 @@ def index():
         events.sort(key=lambda x: (x['date'], x['time']))
 
     # Pass the events list to the template
-    return render_template('index.html', events=events, conductors=conductors, locations=locations)
+    return render_template('index.html', events=events, conductors=conductors, locations=locations, default_event=default_event)
 
 
 # a function to edit events
@@ -79,7 +85,7 @@ def edit(index):
         event = events.pop(index)
         referrer = request.referrer
         # Render the edit.html template with the event and index as parameters
-        return render_template('edit.html', event=event, index=index, locations=locations, conductors=conductors, referrer=referrer)
+        return render_template('index.html', default_event=event, index=index, locations=locations, conductors=conductors, referrer=referrer)
 
     # If there are no events in the list
     else:
@@ -119,7 +125,7 @@ def calendar(month=None, year=None):
     dates = cal.monthdatescalendar(year, month)
 
     # Pass the events list to the template
-    return render_template('calendar.html', events=events, dates=dates, month=month, year=year)
+    return render_template('calendar.html', events=events, dates=dates, month=month, year=year, default_event=default_event)
 
 
 @app.route('/backup')
@@ -132,7 +138,7 @@ def backup():
 
 @app.route('/restore')
 def restore():
-    with open('events.csv', 'r') as f:
+    with open('Flask-Calendar-app_git/events.csv', 'r') as f:
         for line in f:
             # Split the line into date, time, location, and conductor
             meeting_date, meeting_time, location, conductor = line.strip().split(',')

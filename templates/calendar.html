@@ -60,11 +60,7 @@
                                         <div class="card-body py-1">
                                         <!-- <div class="mx-auto"> -->
                                             <h5 class="card-subtitle">
-                                                {% if event.time.strftime('%p') == 'AM' %}
-                                                    <nobr>{{ event.time.strftime('%I:%M') }} <small>pgi</small></nobr>
-                                                {% else %}
-                                                    <nobr>{{ event.time.strftime('%I:%M') }} <small>ptg</small></nobr>
-                                                {% endif %}
+                                                <nobr>{{ event.time.strftime('%I:%M %p') }}</nobr>
                                             </h5>
                                             <span class="card-subtitle">{{ event.location }}</span>
                                             <h6 class="card-subtitle">{{ event.conductor }}</h6>
