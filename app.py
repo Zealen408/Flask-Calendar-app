@@ -2,7 +2,8 @@ from flask import Flask, render_template, request, redirect, url_for
 from datetime import date, time, datetime
 from calendar import Calendar
 import csv
-from external_variables import conductors, locations
+
+import config
 
 app = Flask(__name__)
 
@@ -41,7 +42,7 @@ def index():
         events.sort(key=lambda x: (x['date'], x['time']))
 
     # Pass the events list to the template
-    return render_template('index.html', events=events, conductors=conductors, locations=locations, default_event=default_event)
+    return render_template('index.html', events=events, conductors=config.conductors, locations=config.locations, default_event=default_event)
 
 
 # a function to edit events
@@ -85,7 +86,7 @@ def edit(index):
         event = events.pop(index)
         referrer = request.referrer
         # Render the edit.html template with the event and index as parameters
-        return render_template('index.html', default_event=event, index=index, locations=locations, conductors=conductors, referrer=referrer)
+        return render_template('index.html', default_event=event, index=index, conductors=config.conductors, locations=config.locations, referrer=referrer)
 
     # If there are no events in the list
     else:
@@ -138,7 +139,7 @@ def backup():
 
 @app.route('/restore')
 def restore():
-    with open('Flask-Calendar-app_git/events.csv', 'r') as f:
+    with open('events.csv', 'r') as f:
         for line in f:
             # Split the line into date, time, location, and conductor
             meeting_date, meeting_time, location, conductor = line.strip().split(',')
